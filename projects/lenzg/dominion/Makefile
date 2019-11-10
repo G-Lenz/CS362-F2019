@@ -29,3 +29,30 @@ all: playdom player
 
 clean:
 	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
+
+unittest1: unittest1.c dominion.o rngs.o
+	gcc unittest1.c dominion.o rngs.o -o unittest1 -coverage -fpic -lm
+
+unittest2: unittest2.c dominion.o rngs.o
+	gcc unittest2.c dominion.o rngs.o -o unittest2 -coverage -fpic -lm
+unittest3: unittest3.c dominion.o rngs.o
+	gcc unittest3.c dominion.o rngs.o -o unittest3 -coverage -fpic -lm
+unittest4: unittest4.c dominion.o rngs.o
+	gcc unittest4.c dominion.o rngs.o -o unittest4 -coverage -fpic -lm
+unittest5: unittest5.c dominion.o rngs.o
+	gcc unittest5.c dominion.o rngs.o -o unittest5 -coverage -fpic -lm
+unittests: unittest1 unittest2 unittest3 unittest4 unittest5
+
+rununittests: 
+	./unittest1 >> unittestresults.out
+	./unittest2 >> unittestresults.out
+	./unittest3 >> unittestresults.out
+	./unittest4 >> unittestresults.out
+	./unittest5 >> unittestresults.out
+coverageinfo: 
+	gcov dominion.c -b -f >> unittestresults.out
+unittestresults: unittests rununittests coverageinfo
+
+cleanunittests:
+	rm unittestresults.out unittest1 unittest2 unittest3 unittest4 unittest5 dominion.c.gcov 
+
