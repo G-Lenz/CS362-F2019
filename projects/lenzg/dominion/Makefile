@@ -30,29 +30,23 @@ all: playdom player
 clean:
 	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
 
-unittest1: unittest1.c dominion.o rngs.o
-	gcc unittest1.c dominion.o rngs.o -o unittest1 -coverage -fpic -lm
+randomtest1: randomtestcard1.c dominion.o rngs.o
+	gcc randomtestcard1.c dominion.o rngs.o -o randomtest1 -coverage -fpic -lm -g
 
-unittest2: unittest2.c dominion.o rngs.o
-	gcc unittest2.c dominion.o rngs.o -o unittest2 -coverage -fpic -lm
-unittest3: unittest3.c dominion.o rngs.o
-	gcc unittest3.c dominion.o rngs.o -o unittest3 -coverage -fpic -lm
-unittest4: unittest4.c dominion.o rngs.o
-	gcc unittest4.c dominion.o rngs.o -o unittest4 -coverage -fpic -lm
-unittest5: unittest5.c dominion.o rngs.o
-	gcc unittest5.c dominion.o rngs.o -o unittest5 -coverage -fpic -lm
-unittests: unittest1 unittest2 unittest3 unittest4 unittest5
+randomtest2: randomtestcard2.c dominion.o rngs.o
+	gcc randomtestcard2.c dominion.o rngs.o -o randomtest2 -coverage -fpic -lm -g
+randomtest3: randomtestcard3.c dominion.o rngs.o
+	gcc randomtestcard3.c dominion.o rngs.o -o randomtest3 -coverage -fpic -lm -g
+randomtests: randomtest1 randomtest2 randomtest3 
 
-rununittests: 
-	./unittest1 >> unittestresults.out
-	./unittest2 >> unittestresults.out
-	./unittest3 >> unittestresults.out
-	./unittest4 >> unittestresults.out
-	./unittest5 >> unittestresults.out
+runrandomtests: 
+	./randomtest1 | sort -r | uniq >> randomtestresults.out
+	./randomtest2 | sort -r | uniq >> randomtestresults.out
+	./randomtest3 | sort -r | uniq >> randomtestresults.out
 coverageinfo: 
-	gcov dominion.c -b -f >> unittestresults.out
-unittestresults: unittests rununittests coverageinfo
+	gcov dominion.c -b -f >> randomtestresults.out
+randomtestresults: randomtests runrandomtests coverageinfo
 
-cleanunittests:
-	rm unittestresults.out unittest1 unittest2 unittest3 unittest4 unittest5 dominion.c.gcov 
+cleanrandomtests:
+	rm randomtestresults.out randomtest1 randomtest2 randomtest3 
 
