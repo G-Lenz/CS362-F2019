@@ -30,23 +30,4 @@ all: playdom player
 clean:
 	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
 
-randomtest1: randomtestcard1.c dominion.o rngs.o
-	gcc randomtestcard1.c dominion.o rngs.o -o randomtest1 -coverage -fpic -lm -g
-
-randomtest2: randomtestcard2.c dominion.o rngs.o
-	gcc randomtestcard2.c dominion.o rngs.o -o randomtest2 -coverage -fpic -lm -g
-randomtest3: randomtestcard3.c dominion.o rngs.o
-	gcc randomtestcard3.c dominion.o rngs.o -o randomtest3 -coverage -fpic -lm -g
-randomtests: randomtest1 randomtest2 randomtest3 
-
-runrandomtests: 
-	./randomtest1 | sort -r | uniq >> randomtestresults.out
-	./randomtest2 | sort -r | uniq >> randomtestresults.out
-	./randomtest3 | sort -r | uniq >> randomtestresults.out
-coverageinfo: 
-	gcov dominion.c -b -f >> randomtestresults.out
-randomtestresults: randomtests runrandomtests coverageinfo
-
-cleanrandomtests:
-	rm randomtestresults.out randomtest1 randomtest2 randomtest3 
 
